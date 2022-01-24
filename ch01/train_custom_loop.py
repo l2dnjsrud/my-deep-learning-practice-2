@@ -45,6 +45,35 @@ for epoch in range(max_epoch):
         #5) 정기적으로 학습 경과 출력
         if (iters+1) % 10 == 0:
             avg_loss = total_loss / loss_count
-            print('| 에폭 %d |  반복 %d / %d | 손실 %.2f' % (eopch+1, iters+1, max_iters, avg_loss))
+            print('| 에폭 %d |  반복 %d / %d | 손실 %.2f' % (epoch+1, iters+1, max_iters, avg_loss))
             loss_list.append(avg_loss)
             total_loss, loss_count = 0, 0
+
+# 학습 결과 플롯
+plt.plot(np.arange(len(loss_list)), loss_list, label='train')
+plt.xlabel('반복 (x10)')
+plt.ylabel('손실')
+plt.show()
+plt.savefig('train_custom_loop.png')
+
+# 경계 영역 플롯
+h = 0.001
+x_min, x_max = x[:, 0].min() - .1, x[:, 0].max() + .1
+y_min, y_max = x[:, 1].min() - .1, x[:, 1].max() + .1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+X = np.c_[xx.ravel(), yy.ravel()]
+score = model.predict(X)
+predict_cls = np.argmax(score, axis=1)
+Z = predict_cls.reshape(xx.shape)
+plt.contourf(xx, yy, Z)
+plt.axis('off')
+
+# 데이터점 플롯
+x, t = spiral.load_data()
+N = 100
+CLS_NUM = 3
+markers = ['o', 'x', '^']
+for i in range(CLS_NUM):
+    plt.scatter(x[i*N:(i+1)*N, 0], x[i*N:(i+1)*N, 1], s=40, marker=markers[i])
+plt.show()
+plt.savefig('train_custom_loop.png')
