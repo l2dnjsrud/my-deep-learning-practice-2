@@ -7,8 +7,8 @@ T = 20  #시계열 데이터의 길이
 
 dh = np.ones((N, H))
 np.random.seed(3)  #제현이 가능하도록 난수의 시드 고정
-Wh = np.random,randn(H, H)
-
+#Wh = np.random.randn(H, H)
+Wh = np.random.randn(H, H) * 0.5
 norm_list = []
 for t in range(T):
     dh = np.matmul(dh, Wh.T)
@@ -23,4 +23,4 @@ plt.xticks([0, 4, 9, 14, 19], [1, 5, 10, 15, 20])
 plt.xlabel('시간 크기(time step)')
 plt.ylabel('노름(norm)')
 plt.show()
-plt.savefig('rnn_gradient_graph.png')
+plt.savefig('rnn_gradient_graph1.png')
